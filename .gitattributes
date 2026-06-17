@@ -1,0 +1,13 @@
+# Normalize line endings for text files in the repo (checked in as LF).
+* text=auto
+
+# Help GitHub/diffs treat sources sensibly.
+*.cs   text diff=csharp
+*.csproj text
+*.slnx text
+*.config text
+*.md   text
+
+# Unity AssetBundles are binary and have NO file extension — never let
+# git apply line-ending normalization to them or it corrupts the bundle.
+HybridAnimalsMod/Bundles/** binary
