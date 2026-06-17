@@ -36,6 +36,8 @@ Built on the **[Hybrid Animals Mod Helper](https://github.com/eris-webserv/HAMod
 * **BepInEx 6** (Unity IL2CPP)
 * **HAModHelper.GamePlugin** — hard dependency
 
+> **Note:** when a feature this mod needs isn't in HAModHelper yet, it may ship against a custom build of the helper until the change lands upstream.
+
 ## Building
 
 ```sh
