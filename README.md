@@ -48,9 +48,16 @@ NuGet dependencies (BepInEx and `HybridAnimals.GameLibs.Android`) restore from t
 
 ## Installation
 
-1. Install **BepInEx 6 (IL2CPP)** into your Hybrid Animals install.
+1. Install **BepInEx 6 (IL2CPP)** into your Hybrid Animals install. The easiest way to set this up is the **[FusionCore launcher](https://github.com/All-Of-Us-Mods/FusionCore)**, which handles BepInEx for you.
 2. Drop **`HAModHelper.GamePlugin.dll`** and **`TheEverythingMod.dll`** into `BepInEx/plugins`.
 3. Launch the game.
+
+## Known Limitations
+
+Issues we're aware of and don't plan to fix:
+
+* The Perma-chest still shows the vanilla "everything inside will disappear" warning when you pick it up, even though the contents are actually kept.
+* The Tele-Chest and Perma-chest don't share their contents across different worlds or servers. Storage is per world and per server.
 
 ## A Note on Development
 
