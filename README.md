@@ -5,7 +5,8 @@ A content mod for **Hybrid Animals** (BepInEx / IL2CPP) that adds craftable item
 ![BepInEx](https://img.shields.io/badge/BepInEx-IL2CPP-f7a84f?style=flat)
 ![.NET](https://img.shields.io/badge/.NET-10-4f8ef7?style=flat)
 ![Hybrid Animals](https://img.shields.io/badge/Hybrid%20Animals-Mod-f7a84f?style=flat)
-![Stars](https://img.shields.io/github/stars/Segually/TheEverythingModHA?style=flat&color=4f8ef7&label=Stars)
+![License](https://img.shields.io/badge/License-GPLv3-4f8ef7?style=flat)
+![Stars](https://img.shields.io/github/stars/Segually/TheEverythingModHA?style=flat&color=f7a84f&label=Stars)
 
 ## What It Adds
 
@@ -57,3 +58,7 @@ Part of this mod's logic was written with AI assistance — much of the reverse-
 
 * **[HAModHelper](https://github.com/eris-webserv/HAModHelper)** — the modding API this is built on
 * **[Hybrid Animals Multiplayer](https://github.com/eris-webserv/HAMP)** — the multiplayer revival
+
+## License
+
+Licensed under the **[GNU General Public License v3.0](LICENSE)**. Use it, modify it, and share it freely — no credit required — but any project that incorporates part of it must also be released as open source under the same license.
