@@ -47,9 +47,17 @@
         
     </ItemGroup>
 
+    <PropertyGroup>
+        <!-- Path to the HAModHelper build output. Relative by default: it assumes the HAModHelper
+             repo is checked out alongside this one (../../SegualHAModHelper). It is not a full/drive
+             path, so it stays portable. If your helper lives elsewhere, override without editing this
+             file: pass -p:HAModHelperDll=<path> to dotnet build, or set a HAModHelperDll env var. -->
+        <HAModHelperDll Condition="'$(HAModHelperDll)' == ''">..\..\SegualHAModHelper\HAModHelper.GamePlugin\bin\Release\net10.0\HAModHelper.GamePlugin.dll</HAModHelperDll>
+    </PropertyGroup>
+
     <ItemGroup>
       <Reference Include="HAModHelper.GamePlugin">
-        <HintPath>..\..\SegualHAModHelper\HAModHelper.GamePlugin\bin\Release\net10.0\HAModHelper.GamePlugin.dll</HintPath>
+        <HintPath>$(HAModHelperDll)</HintPath>
       </Reference>
     </ItemGroup>
 
