@@ -495,3 +495,37 @@ internal static class PermaChestUsesBasketIdPatch
         __result = !PermaChestPickupGuard.InPickup;
     }
 }
+
+// Block nesting a Perma-chest inside another Perma-chest. ToContainer is the game's "store an item
+// into the open container" method (it resolves the container's permitted slots, then places the item),
+// and it's only invoked on a real store action, so it's the right place to veto the move. If both the
+// item being stored AND the open container are Perma-chests, we cancel the drag, shut the chest, and
+// show a message. Returning the full incoming count as "leftover" means nothing was stored, so the
+// Perma-chest stays in the player's inventory.
+[HarmonyPatch(typeof(inventory_ctr), "ToContainer", new Type[] { typeof(InventoryItem), typeof(int), typeof(inventory_ctr.ptype) })]
+internal static class NoPermaChestInPermaChestPatch
+{
+    [HarmonyPrefix]
+    static bool Prefix(InventoryItem __0, int __1, ref int __result)
+    {
+        try
+        {
+            if (__0 == null || __0.item_name != "everythingmodbysegual:permachest") return true;
+
+            var openContainer = GameController.Instance?.interacting_element_item;
+            if (openContainer == null || openContainer.item_name != "everythingmodbysegual:permachest") return true;
+
+            var inv = inventory_ctr.Instance;
+            inv?.CancelDragging();
+            WindowControl.Instance?.CloseMiniwindow(true);
+            PopupControl.Instance?.ShowMessage("...");
+
+            __result = __1;  // full count reported as not-stored -> the item stays in inventory
+            return false;    // skip the store
+        }
+        catch
+        {
+            return true;     // on any error, fall back to vanilla behaviour
+        }
+    }
+}
