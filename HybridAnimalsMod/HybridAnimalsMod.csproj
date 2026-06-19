@@ -22,6 +22,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <None Remove="Bundles\Ice\ice" />
 	  <None Remove="Bundles\ModernBed\modernbed" />
 	  <None Remove="Bundles\Pioneer\pioneerhats" />
 	  <None Remove="Bundles\TGA\ancientgold" />
@@ -30,6 +31,7 @@
 	</ItemGroup>
 
     <ItemGroup>
+      <EmbeddedResource Include="Bundles\Ice\ice" />
       <EmbeddedResource Include="Bundles\ModernBed\modernbed" />
       <EmbeddedResource Include="Bundles\Pioneer\pioneerhats" />
       <EmbeddedResource Include="Bundles\TGA\ancientgold" />

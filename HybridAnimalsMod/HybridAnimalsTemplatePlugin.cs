@@ -5,6 +5,7 @@ using BepInEx.Unity.IL2CPP;
 using HarmonyLib;
 using HAModHelper.GamePlugin.Assets.Systems;
 using HAModHelper.GamePlugin.Items.Systems;
+using HAModHelper.GamePlugin.World.Systems;
 
 
 namespace HybridAnimalsMod;
@@ -73,6 +74,15 @@ Assembly.GetExecutingAssembly(),
 "TheEverythingMod.Bundles.TGA.spartahelm",
 "SpartasHelmet")
 .AddPrefab("Assets/Prefabs/SpartasHelmet.prefab", "everythingmodbysegual:spartahelm", "spartahelm");
+
+        AssetBundleManager.Instance
+.RegisterBundleFromEmbeddedResource(
+Assembly.GetExecutingAssembly(),
+"TheEverythingMod.Bundles.Ice.ice",
+"IceVein")
+.AddPrefab("Assets/Prefabs/IceVein.prefab", "everythingmodbysegual:icevein", "icevein")
+.AddPrefab("Assets/Prefabs/IceCubes.prefab", "everythingmodbysegual:icechunks", "icechunks")
+.AddPrefab("Assets/Prefabs/IceCream.prefab", "everythingmodbysegual:icecream", "icecream");
 
 
         ItemManager.Instance.AddItem(new Item
@@ -225,6 +235,87 @@ Assembly.GetExecutingAssembly(),
 
 
 
+
+        ItemManager.Instance.AddItem(new Item
+        {
+            ModId = "everythingmodbysegual",
+            ItemId = "icevein",
+            Name = "Ice Vein",
+            StackLimit = 1,
+            Description = "For the times when a regular stone vein just isn't enough.",
+            ExtraFields = new()
+            {
+                ["Craft_required_lvl"] = "8",
+                ["Crafting_ingredient_A"] = "Ice Shard",
+                ["Crafting_ingredient_A_count"] = "1",
+                //["Crafting_ingredient_B"] = "Amethyst",
+                //["Crafting_ingredient_B_count"] = "1",
+                ["Default Coloring"] = "Basic Red",
+                ["World_obj_path"] = "IceVein",
+                ["tool_required_to_move"] = "Drill",
+                ["Type"] = "Place_in_world",
+                ["World_geometry"] = "3_by_3",
+                ["show_model3d"] = "true",
+                ["model3d_camDist"] = "5.3",
+                ["model3d_fov"] = "50",
+                ["model3d_yRot"] = "10",
+                ["model3d_xRot"] = "25",
+                ["model3d_recenterX"] = "-31",
+                ["model3d_objRot"] = "12",
+                ["model3d_camHeight"] = "0.2",
+                ["model3d_recenterY"] = "-5",
+
+                ["Pollinator Regen Level"] = "6",
+                ["Pollinator Regen RespawnId"] = "mob_spawn",
+            },
+        });
+
+        ItemManager.Instance.AddItem(new Item
+        {
+            ModId = "everythingmodbysegual",
+            ItemId = "icechunks",
+            Name = "Ice Cubes",
+            StackLimit = 1,
+            Description = "These chunks are made of ice, nothing out of the ordinary here.",
+            ExtraFields = new()
+            {
+                ["Default Coloring"] = "Weapon - Ice",
+                ["Copy3dModelPosition"] = "Wizard Hat",
+                // Resolves to Addressables key "Assets/Prefabs/TUNG_BAT.prefab", served from tungbat.bundle.
+                ["World_obj_path"] = "IceCubes",
+                ["show_model3d"] = "true",
+            },
+        });
+
+        ItemManager.Instance.AddItem(new Item
+        {
+            ModId = "everythingmodbysegual",
+            ItemId = "icecream",
+            Name = "Ice Cream",
+            StackLimit = 3,
+            Description = "Nothing beats warm climate than a good ol' cone of ice!",
+            ExtraFields = new()
+            {
+                ["Default Coloring"] = "Weapon - Ice",
+                ["Copy3dModelPosition"] = "Wizard Hat",
+                ["Type"] = "Consumable",
+
+                ["Craft_required_lvl"] = "4",
+                ["Crafting_ingredient_A"] = "everythingmodbysegual:icechunks",
+                ["Crafting_ingredient_A_count"] = "4",
+                ["Crafting_ingredient_B"] = "Stick",
+                ["Crafting_ingredient_B_count"] = "2",
+
+                ["Sound on Use"] = "Crunch",
+                ["Sound on Craft"] = "Bubbles",
+                ["Crafting_makes"] = "3",
+                // Resolves to Addressables key "Assets/Prefabs/TUNG_BAT.prefab", served from tungbat.bundle.
+                ["World_obj_path"] = "IceCream",
+                ["show_model3d"] = "true",
+            },
+        });
+
+
         ItemManager.Instance.AddItem(new Item
         {
             ModId = "everythingmodbysegual",
@@ -330,6 +421,13 @@ Assembly.GetExecutingAssembly(),
         insertAfter: "Ice SwirlSword"
 );
 
+
+        CraftingInjectionManager.Instance.Inject(
+"Crafting - Crucible",
+"everythingmodbysegual:icecream",
+insertAfter: "Ice SwirlSword"
+);
+
         CraftingInjectionManager.Instance.Inject(
 "Crafting - Crucible",
 "everythingmodbysegual:spartahelm",
@@ -401,7 +499,15 @@ insertAfter: "Spirit Lance"
         // pickup/move. Also a custom interactable (see OpenPermaChest).
         InteractableManager.Instance.RegisterCustom("everythingmodbysegual:permachest", OpenPermaChest);
 
-
+        // Scatter Ice Veins through the Snow biome using the game's own weighted generation. Native
+        // clumping spawns them in clusters of 1-2 (1 base placement + 0-1 extra). RareMedium keeps them
+        // uncommon relative to the biome's other objects — tune commonness/clump to taste.
+        WorldGenManager.Instance.InjectWeighted(
+            "everythingmodbysegual:icevein",
+            Biome.Snow,
+            commonness: WeightedCommonness.RareMedium,
+            clumpMin: 0,
+            clumpMax: 1);
     }
 
     // Perma-chest interaction: just open the placed object's own container. The container id lives in
